@@ -2,7 +2,7 @@
 
 from flask import Flask, render_template, request, jsonify
 from werkzeug.utils import secure_filename
-import pdf_processor_logic
+import pdf_logic
 import os
 
 app = Flask(__name__)
@@ -13,7 +13,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-pdf_processor_logic.initialize_nlp_models()
+pdf_logic.initialize_nlp_models()
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -43,7 +43,7 @@ def upload_and_process():
         except Exception as e:
             return jsonify({"error": f"Lỗi lưu file: {e}"}), 500
 
-        result, error = pdf_processor_logic.process_single_article(file_path)
+        result, error = pdf_logic.process_single_article(file_path)
         
         try:
             os.remove(file_path)

@@ -22,7 +22,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Công cụ Phân tích Bài báo Khoa học (PDF)</h1>
+        <h1>Phân tích Bài báo Khoa học</h1>
         
         <form id="upload-form" enctype="multipart/form-data">
             <input type="file" id="pdf_file" name="pdf_file" accept=".pdf" required>
@@ -43,7 +43,6 @@
             const resultsContainer = document.getElementById('results-container');
             const loadingIndicator = document.getElementById('loading-indicator');
             
-            // Xóa kết quả cũ và hiển thị loading
             resultsContainer.innerHTML = '';
             loadingIndicator.style.display = 'inline';
 
@@ -52,15 +51,13 @@
                 body: formData
             })
             .then(response => {
-                loadingIndicator.style.display = 'none'; // Ẩn loading
+                loadingIndicator.style.display = 'none';
                 if (!response.ok) {
-                    // Nếu có lỗi HTTP (4xx, 5xx), cố gắng đọc lỗi từ JSON
                     return response.json().then(err => { throw new Error(err.error || 'Lỗi không xác định từ máy chủ.'); });
                 }
                 return response.json();
             })
             .then(data => {
-                // Hiển thị kết quả thành công
                 const html = `
                     <h2>Phân tích Thành công: ${data.filename}</h2>
                     <div class="result-box">
@@ -75,7 +72,6 @@
                 resultsContainer.innerHTML = html;
             })
             .catch(error => {
-                // Xử lý và hiển thị lỗi
                 resultsContainer.innerHTML = `<div class="error">Lỗi: ${error.message}</div>`;
             });
         });
